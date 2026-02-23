@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --govt-blue: #003366;
+            --govt-orange: #FF9933;
+            --govt-green: #138808;
+        }
+        
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--govt-blue) 0%, #004080 100%);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 4px 10px;
+        }
+        
+        .sidebar .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .main-content {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .stat-card {
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tricolor-bar {
+            height: 4px;
+            background: linear-gradient(to right, var(--govt-orange) 33%, white 33%, white 66%, var(--govt-green) 66%);
+        }
+    </style>
+</head>
+
+<nav th:fragment="navbar" class="navbar navbar-dark sticky-top" style="background: var(--govt-blue);">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <i class="bi bi-bank2 me-2"></i>
+            <span class="fw-bold">UACB</span>
+        </a>
+        <div class="d-flex align-items-center text-white">
+            <span sec:authentication="name" class="me-3"></span>
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i>Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<aside th:fragment="sidebar-student" class="sidebar p-3">
+    <div class="text-center text-white mb-4 pb-3 border-bottom border-light border-opacity-25">
+        <i class="bi bi-mortarboard fs-1"></i>
+        <div class="mt-2 fw-bold">Student Portal</div>
+    </div>
+    <nav class="nav flex-column">
+        <a class="nav-link" th:classappend="${currentUri == '/student/dashboard'} ? 'active'" th:href="@{/student/dashboard}">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/student/wallet'} ? 'active'" th:href="@{/student/wallet}">
+            <i class="bi bi-wallet2 me-2"></i>Credit Wallet
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/student/history'} ? 'active'" th:href="@{/student/history}">
+            <i class="bi bi-clock-history me-2"></i>Credit History
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/student/profile'} ? 'active'" th:href="@{/student/profile}">
+            <i class="bi bi-person me-2"></i>Profile
+        </a>
+    </nav>
+</aside>
+
+<aside th:fragment="sidebar-institution" class="sidebar p-3">
+    <div class="text-center text-white mb-4 pb-3 border-bottom border-light border-opacity-25">
+        <i class="bi bi-building fs-1"></i>
+        <div class="mt-2 fw-bold">Institution Portal</div>
+    </div>
+    <nav class="nav flex-column">
+        <a class="nav-link" th:classappend="${currentUri == '/institution/dashboard'} ? 'active'" th:href="@{/institution/dashboard}">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/institution/courses'} ? 'active'" th:href="@{/institution/courses}">
+            <i class="bi bi-book me-2"></i>Manage Courses
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/institution/issue-credit'} ? 'active'" th:href="@{/institution/issue-credit}">
+            <i class="bi bi-plus-circle me-2"></i>Issue Credit
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/institution/credits'} ? 'active'" th:href="@{/institution/credits}">
+            <i class="bi bi-list-check me-2"></i>Issued Credits
+        </a>
+    </nav>
+</aside>
+
+<aside th:fragment="sidebar-admin" class="sidebar p-3">
+    <div class="text-center text-white mb-4 pb-3 border-bottom border-light border-opacity-25">
+        <i class="bi bi-shield-check fs-1"></i>
+        <div class="mt-2 fw-bold">Admin Portal</div>
+    </div>
+    <nav class="nav flex-column">
+        <a class="nav-link" th:classappend="${currentUri == '/admin/dashboard'} ? 'active'" th:href="@{/admin/dashboard}">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/admin/verifications'} ? 'active'" th:href="@{/admin/verifications}">
+            <i class="bi bi-check-circle me-2"></i>Verifications
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/admin/students'} ? 'active'" th:href="@{/admin/students}">
+            <i class="bi bi-people me-2"></i>Students
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/admin/institutions'} ? 'active'" th:href="@{/admin/institutions}">
+            <i class="bi bi-building me-2"></i>Institutions
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/admin/analytics'} ? 'active'" th:href="@{/admin/analytics}">
+            <i class="bi bi-graph-up me-2"></i>Analytics
+        </a>
+        <a class="nav-link" th:classappend="${currentUri == '/admin/audit-logs'} ? 'active'" th:href="@{/admin/audit-logs}">
+            <i class="bi bi-journal-text me-2"></i>Audit Logs
+        </a>
+    </nav>
+</aside>
+</html>

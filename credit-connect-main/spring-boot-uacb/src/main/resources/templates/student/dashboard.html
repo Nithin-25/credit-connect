@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/header :: head}">
+    <title>Student Dashboard - UACB</title>
+</head>
+<body>
+    <div class="tricolor-bar"></div>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 p-0">
+                <aside th:replace="~{fragments/header :: sidebar-student}"></aside>
+            </div>
+            
+            <div class="col-md-10 main-content p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="mb-1">Welcome, <span th:text="${user.name}">Student</span>!</h4>
+                        <p class="text-muted mb-0">Your Academic Credit Dashboard</p>
+                    </div>
+                    <span class="badge bg-primary fs-6" th:text="${profile.enrollmentNumber}">2021CS001</span>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                        <i class="bi bi-mortarboard fs-4 text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-0" th:text="${totalCredits}">0</h3>
+                                        <small class="text-muted">Total Credits</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                                        <i class="bi bi-check-circle fs-4 text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-0" th:text="${verifiedCredits.size()}">0</h3>
+                                        <small class="text-muted">Verified Courses</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                                        <i class="bi bi-clock fs-4 text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-0" th:text="${pendingCredits.size()}">0</h3>
+                                        <small class="text-muted">Pending Verification</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                                        <i class="bi bi-graph-up fs-4 text-info"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-0"><span th:text="${#numbers.formatDecimal(progress, 1, 1)}">0</span>%</h3>
+                                        <small class="text-muted">Degree Progress</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Degree Progress -->
+                <div class="card shadow-sm mb-4" th:if="${profile.degreeProgram != null}">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-award me-2"></i>Degree Progress</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span th:text="${profile.degreeProgram.programName}">B.Tech Computer Science</span>
+                            <span><span th:text="${totalCredits}">0</span> / <span th:text="${profile.degreeProgram.totalCreditsRequired}">160</span> credits</span>
+                        </div>
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 th:style="'width: ' + ${progress} + '%'"
+                                 th:text="${#numbers.formatDecimal(progress, 1, 1)} + '%'">0%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Credits -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-list-check me-2"></i>Recent Credits</h5>
+                        <a th:href="@{/student/wallet}" class="btn btn-outline-primary btn-sm">View All</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Credits</th>
+                                        <th>Grade</th>
+                                        <th>Institution</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="credit : ${credits}" th:if="${credits.size() > 0}">
+                                        <td>
+                                            <div class="fw-bold" th:text="${credit.course.courseName}">Course Name</div>
+                                            <small class="text-muted" th:text="${credit.course.courseCode}">CS101</small>
+                                        </td>
+                                        <td th:text="${credit.course.creditValue}">4</td>
+                                        <td><span class="badge bg-primary" th:text="${credit.grade}">A</span></td>
+                                        <td th:text="${credit.issuingInstitution.institutionName}">IIT Delhi</td>
+                                        <td>
+                                            <span class="badge" 
+                                                  th:classappend="${credit.status.name() == 'VERIFIED'} ? 'bg-success' : (${credit.status.name() == 'PENDING'} ? 'bg-warning' : 'bg-danger')"
+                                                  th:text="${credit.status}">Status</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${credits.size() == 0}">
+                                        <td colspan="5" class="text-center py-4 text-muted">
+                                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                            No credit records yet
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

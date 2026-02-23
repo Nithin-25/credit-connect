@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+    <title>Credit History - UACB</title>
+</head>
+<body>
+    <div class="tricolor-bar"></div>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 p-0">
+                <aside th:replace="~{fragments/header :: sidebar-student}"></aside>
+            </div>
+            
+            <div class="col-md-10 main-content p-4">
+                <h4 class="mb-4"><i class="bi bi-clock-history me-2"></i>Credit History & Audit Trail</h4>
+                
+                <!-- Credit Records -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">All Credit Records</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Course</th>
+                                        <th>Credits</th>
+                                        <th>Institution</th>
+                                        <th>Status</th>
+                                        <th>Verification</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="credit : ${credits}">
+                                        <td th:text="${#temporals.format(credit.createdAt, 'dd MMM yyyy')}">01 Jan 2024</td>
+                                        <td>
+                                            <div th:text="${credit.course.courseName}">Course Name</div>
+                                            <small class="text-muted" th:text="${credit.course.courseCode}">CS101</small>
+                                        </td>
+                                        <td th:text="${credit.course.creditValue}">4</td>
+                                        <td th:text="${credit.issuingInstitution.institutionName}">IIT Delhi</td>
+                                        <td>
+                                            <span class="badge" 
+                                                  th:classappend="${credit.status.name() == 'VERIFIED'} ? 'bg-success' : (${credit.status.name() == 'PENDING'} ? 'bg-warning' : 'bg-danger')"
+                                                  th:text="${credit.status}">Status</span>
+                                        </td>
+                                        <td>
+                                            <span th:if="${credit.verificationDate != null}" th:text="${#temporals.format(credit.verificationDate, 'dd MMM yyyy')}">-</span>
+                                            <span th:if="${credit.verificationDate == null}" class="text-muted">Pending</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Audit Trail -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-journal-text me-2"></i>Activity Log</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline">
+                            <div th:each="log : ${auditLogs}" class="d-flex mb-3">
+                                <div class="me-3">
+                                    <div class="rounded-circle bg-primary bg-opacity-10 p-2">
+                                        <i class="bi bi-activity text-primary"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div th:text="${log.description}">Activity description</div>
+                                    <small class="text-muted" th:text="${#temporals.format(log.createdAt, 'dd MMM yyyy, HH:mm')}">Date</small>
+                                </div>
+                            </div>
+                            <div th:if="${auditLogs.size() == 0}" class="text-center text-muted py-4">
+                                No activity logs yet
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

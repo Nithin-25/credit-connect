@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - UACB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <i class="bi bi-shield-x text-danger" style="font-size: 5rem;"></i>
+                <h1 class="mt-4">Access Denied</h1>
+                <p class="text-muted">You don't have permission to access this page.</p>
+                <a th:href="@{/}" class="btn btn-primary mt-3">
+                    <i class="bi bi-house me-2"></i>Go to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

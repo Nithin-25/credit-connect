@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UACB - Unified Academic Credit Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --govt-blue: #003366;
+            --govt-orange: #FF9933;
+            --govt-green: #138808;
+        }
+        
+        .navbar-govt {
+            background: linear-gradient(135deg, var(--govt-blue) 0%, #004080 100%);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--govt-blue) 0%, #1a4d80 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .emblem {
+            max-height: 80px;
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .btn-govt-primary {
+            background-color: var(--govt-orange);
+            border-color: var(--govt-orange);
+            color: var(--govt-blue);
+            font-weight: 600;
+        }
+        
+        .btn-govt-primary:hover {
+            background-color: #e68a00;
+            border-color: #e68a00;
+            color: white;
+        }
+        
+        .btn-govt-outline {
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-govt-outline:hover {
+            background-color: white;
+            color: var(--govt-blue);
+        }
+        
+        .footer-govt {
+            background-color: var(--govt-blue);
+            color: white;
+        }
+        
+        .tricolor-bar {
+            height: 5px;
+            background: linear-gradient(to right, var(--govt-orange) 33%, white 33%, white 66%, var(--govt-green) 66%);
+        }
+    </style>
+</head>
+<body>
+    <div class="tricolor-bar"></div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-govt">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="bi bi-bank2 fs-3 me-2"></i>
+                <div>
+                    <div class="fw-bold">UACB</div>
+                    <small class="d-none d-sm-block" style="font-size: 0.7rem;">Unified Academic Credit Bank</small>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light ms-2 px-3" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-govt-primary ms-2 px-3" th:href="@{/register}">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">
+                <i class="bi bi-mortarboard-fill me-3"></i>
+                Unified Academic Credit Bank
+            </h1>
+            <p class="lead mb-4 mx-auto" style="max-width: 700px;">
+                A centralized digital repository for storing, managing, and verifying academic credits 
+                across institutions. Empowering students with a lifelong academic passport.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a th:href="@{/register}" class="btn btn-govt-primary btn-lg px-4">
+                    <i class="bi bi-person-plus me-2"></i>Get Started
+                </a>
+                <a href="#features" class="btn btn-govt-outline btn-lg px-4">
+                    <i class="bi bi-info-circle me-2"></i>Learn More
+                </a>
+            </div>
+            
+            <div class="row mt-5 pt-4">
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <i class="bi bi-shield-check fs-1 mb-3 d-block" style="color: var(--govt-orange);"></i>
+                        <h5>Verified Credits</h5>
+                        <p class="small text-light">Tamper-proof credit verification by authorized institutions</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <i class="bi bi-arrow-left-right fs-1 mb-3 d-block" style="color: var(--govt-orange);"></i>
+                        <h5>Credit Transfer</h5>
+                        <p class="small text-light">Seamless credit mobility across universities</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3">
+                        <i class="bi bi-clock-history fs-1 mb-3 d-block" style="color: var(--govt-orange);"></i>
+                        <h5>Lifetime Access</h5>
+                        <p class="small text-light">Your academic achievements stored forever</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="features" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">Key Features</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="bi bi-wallet2 fs-2 text-primary"></i>
+                            </div>
+                            <h5 class="card-title">Academic Credit Wallet</h5>
+                            <p class="card-text text-muted">
+                                Students can view their complete credit portfolio, track degree progress, 
+                                and access verified credentials anytime.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-success bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="bi bi-building fs-2 text-success"></i>
+                            </div>
+                            <h5 class="card-title">Institution Portal</h5>
+                            <p class="card-text text-muted">
+                                Colleges and universities can issue credits, manage courses, 
+                                and upload student academic records securely.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-warning bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="bi bi-check-circle fs-2 text-warning"></i>
+                            </div>
+                            <h5 class="card-title">Credit Verification</h5>
+                            <p class="card-text text-muted">
+                                Multi-level verification workflow ensures authenticity 
+                                of all academic credits in the system.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-info bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="bi bi-graph-up fs-2 text-info"></i>
+                            </div>
+                            <h5 class="card-title">Analytics Dashboard</h5>
+                            <p class="card-text text-muted">
+                                Comprehensive insights on credit distribution, 
+                                institutional performance, and system-wide statistics.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="bi bi-journal-text fs-2 text-danger"></i>
+                            </div>
+                            <h5 class="card-title">Audit Trail</h5>
+                            <p class="card-text text-muted">
+                                Complete transparency with detailed logs of all 
+                                activities and credit transactions in the system.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card h-100 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="rounded-circle bg-secondary bg-opacity-10 p-3 d-inline-block mb-3">
+                                <i class="bi bi-mortarboard fs-2 text-secondary"></i>
+                            </div>
+                            <h5 class="card-title">Degree Programs</h5>
+                            <p class="card-text text-muted">
+                                Map credits to degree requirements and track 
+                                completion progress for multiple qualification types.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h2 class="fw-bold mb-4">About UACB</h2>
+                    <p class="text-muted">
+                        The Unified Academic Credit Bank (UACB) is a flagship initiative aligned with 
+                        the National Education Policy 2020. It aims to create a digital infrastructure 
+                        that enables students to accumulate credits from multiple institutions and 
+                        redeem them towards degrees.
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Promotes academic mobility</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Enables lifelong learning</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Reduces credit loss during transfers</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Standardizes credit evaluation</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="p-4 bg-white rounded-4 shadow">
+                        <i class="bi bi-bank fs-1 text-primary mb-3 d-block"></i>
+                        <h4>Smart India Hackathon</h4>
+                        <p class="text-muted mb-0">Prototype Submission</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer-govt py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="mb-3"><i class="bi bi-bank2 me-2"></i>UACB - Unified Academic Credit Bank</h6>
+                    <p class="small text-light mb-0">
+                        A digital initiative for academic credit management under NEP 2020.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="small text-light mb-0">
+                        © 2024 UACB. All rights reserved.<br>
+                        Smart India Hackathon Prototype
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="tricolor-bar"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

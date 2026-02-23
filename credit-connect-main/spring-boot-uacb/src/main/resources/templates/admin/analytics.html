@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+    <title>Analytics - UACB</title>
+</head>
+<body>
+    <div class="tricolor-bar"></div>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 p-0">
+                <aside th:replace="~{fragments/header :: sidebar-admin}"></aside>
+            </div>
+            
+            <div class="col-md-10 main-content p-4">
+                <h4 class="mb-4"><i class="bi bi-graph-up me-2"></i>Analytics Dashboard</h4>
+                
+                <!-- Overview Stats -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-people fs-1 text-primary mb-2 d-block"></i>
+                                <h2 th:text="${totalStudents}">0</h2>
+                                <p class="text-muted mb-0">Total Students</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-building fs-1 text-success mb-2 d-block"></i>
+                                <h2 th:text="${totalInstitutions}">0</h2>
+                                <p class="text-muted mb-0">Institutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-mortarboard fs-1 text-info mb-2 d-block"></i>
+                                <h2 th:text="${totalCreditsIssued}">0</h2>
+                                <p class="text-muted mb-0">Total Credits Issued</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <i class="bi bi-check-circle fs-1 text-warning mb-2 d-block"></i>
+                                <h2 th:text="${verifiedCredits}">0</h2>
+                                <p class="text-muted mb-0">Verified Credits</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Verification Stats -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Credit Verification Status</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-around text-center">
+                                    <div>
+                                        <h3 class="text-success" th:text="${verifiedCredits}">0</h3>
+                                        <p class="text-muted">Verified</p>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-warning" th:text="${pendingCredits}">0</h3>
+                                        <p class="text-muted">Pending</p>
+                                    </div>
+                                </div>
+                                <div class="progress mt-3" style="height: 30px;">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         th:style="'width: ' + (${verifiedCredits + pendingCredits > 0} ? ${verifiedCredits * 100 / (verifiedCredits + pendingCredits)} : 0) + '%'">
+                                        Verified
+                                    </div>
+                                    <div class="progress-bar bg-warning" role="progressbar" 
+                                         th:style="'width: ' + (${verifiedCredits + pendingCredits > 0} ? ${pendingCredits * 100 / (verifiedCredits + pendingCredits)} : 0) + '%'">
+                                        Pending
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Quick Stats</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-6 border-end">
+                                        <h4 class="text-primary" th:text="${totalCreditsIssued / (totalStudents > 0 ? totalStudents : 1)}">0</h4>
+                                        <small class="text-muted">Avg Credits/Student</small>
+                                    </div>
+                                    <div class="col-6">
+                                        <h4 class="text-success" th:text="${totalCreditsIssued / (totalInstitutions > 0 ? totalInstitutions : 1)}">0</h4>
+                                        <small class="text-muted">Avg Credits/Institution</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Institutions List with Credits -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Credits by Institution</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Institution</th>
+                                        <th>Type</th>
+                                        <th>Verified</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="inst : ${institutions}">
+                                        <td th:text="${inst.institutionName}">Institution</td>
+                                        <td><span class="badge bg-secondary" th:text="${inst.institutionType}">Type</span></td>
+                                        <td>
+                                            <span class="badge" th:classappend="${inst.isVerified} ? 'bg-success' : 'bg-warning'"
+                                                  th:text="${inst.isVerified} ? 'Yes' : 'Pending'">Status</span>
+                                        </td>
+                                        <td th:text="${inst.city ?: 'N/A'}">City</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
